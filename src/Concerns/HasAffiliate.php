@@ -24,7 +24,7 @@ trait HasAffiliate
      */
     public function hasReferral(): bool
     {
-        return !empty($this->referral);
+        return ! empty($this->referral);
     }
 
     /**
@@ -46,7 +46,7 @@ trait HasAffiliate
     public function affastMetadata(array $options = []): array
     {
         return array_merge([
-            'affast_referral' => $this->referral
+            'affast_referral' => $this->referral,
         ], $options);
     }
 }

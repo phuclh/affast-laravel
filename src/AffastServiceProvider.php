@@ -4,7 +4,6 @@ namespace Phuclh\Affast;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Phuclh\Affast\Commands\AffastCommand;
 
 class AffastServiceProvider extends PackageServiceProvider
 {
