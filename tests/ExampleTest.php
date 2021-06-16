@@ -1,6 +1,6 @@
 <?php
 
-namespace VendorName\Skeleton\Tests;
+namespace Phuclh\Affast\Tests;
 
 class ExampleTest extends TestCase
 {
