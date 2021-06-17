@@ -4,7 +4,6 @@ namespace Phuclh\Affast;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Phuclh\Affast\Commands\AffastCommand;
 
 class AffastServiceProvider extends PackageServiceProvider
 {
@@ -19,7 +18,10 @@ class AffastServiceProvider extends PackageServiceProvider
     public function registeringPackage()
     {
         $this->app->bind(Affast::class, function () {
-            return new Affast(config('services.affast.token'));
+            return new Affast(
+                config('services.affast.url'),
+                config('services.affast.token')
+            );
         });
     }
 }

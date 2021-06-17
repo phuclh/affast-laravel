@@ -7,13 +7,15 @@ use Illuminate\Support\Facades\Http;
 class Affast
 {
     /** @var string */
-    protected $apiUrl = 'https://affiliate.sharedwithexpose.com/api/';
+    protected $apiUrl;
 
     /** @var \Illuminate\Http\Client\PendingRequest */
     public $http;
 
-    public function __construct(string $apiToken)
+    public function __construct(string $apiUrl, string $apiToken)
     {
+        $this->apiUrl = $apiUrl;
+
         $this->http = Http::withToken($apiToken)->withHeaders([
             'Accept' => 'application/json'
         ]);
@@ -54,15 +56,17 @@ class Affast
 
     /**
      * @param string $referralId
-     * @param float|null $amount
+     * @param float $amount
+     * @param string|null $createdReason
      * @return array|mixed
      * @throws \Illuminate\Http\Client\RequestException
      */
-    public function createReceipt(string $referralId, float $amount)
+    public function createCommission(string $referralId, float $invoiceAmount, ?string $createdReason = null)
     {
-        $response = $this->http->post($this->apiUrl . 'receipts', [
-            'referral_id' => $referralId,
-            'amount'      => $amount,
+        $response = $this->http->post($this->apiUrl . 'commissions', [
+            'referral_id'    => $referralId,
+            'invoice_amount' => $invoiceAmount,
+            'created_reason' => $createdReason
         ]);
 
         return $response->throw()->json();
