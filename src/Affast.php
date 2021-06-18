@@ -75,16 +75,31 @@ class Affast
 
     /**
      * @param string $commissionId
+     * @param string $reason
+     * @return array|mixed
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    public function cancelCommission(string $commissionId, string $reason)
+    {
+        $response = $this->http->post($this->getApiUrl() . 'commissions/' . $commissionId . '/cancel', [
+            'reason' => $reason
+        ]);
+
+        return $response->throw()->json();
+    }
+
+    /**
+     * @param string $commissionId
      * @param array $attributes
      * @return array|mixed
      * @throws \Illuminate\Http\Client\RequestException
      */
-    public function updateCommission(string $commissionId, array $attributes)
-    {
-        $response = $this->http->put($this->getApiUrl() . 'commissions/' . $commissionId, $attributes);
-
-        return $response->throw()->json();
-    }
+    //public function updateCommission(string $commissionId, array $attributes)
+    //{
+    //    $response = $this->http->put($this->getApiUrl() . 'commissions/' . $commissionId, $attributes);
+    //
+    //    return $response->throw()->json();
+    //}
 
     /**
      * @return bool
