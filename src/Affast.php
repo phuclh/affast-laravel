@@ -3,6 +3,7 @@
 namespace Phuclh\Affast;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class Affast
 {
@@ -30,7 +31,7 @@ class Affast
      */
     public function createReferral(string $affiliateTag, array $referee, bool $isRecurring = false)
     {
-        $response = $this->http->post($this->apiUrl . 'referrals', [
+        $response = $this->http->post($this->getApiUrl() . 'referrals', [
             'affiliate_tag'             => $affiliateTag,
             'referee_id'                => $referee['id'],
             'referee_name'              => $referee['name'] ?? null,
@@ -49,7 +50,7 @@ class Affast
      */
     public function findReferral(string $id)
     {
-        $response = $this->http->get($this->apiUrl . 'referrals/' . $id);
+        $response = $this->http->get($this->getApiUrl() . 'referrals/' . $id);
 
         return $response->throw()->json();
     }
@@ -63,11 +64,24 @@ class Affast
      */
     public function createCommission(string $referralId, float $invoiceAmount, ?string $createdReason = null)
     {
-        $response = $this->http->post($this->apiUrl . 'commissions', [
+        $response = $this->http->post($this->getApiUrl() . 'commissions', [
             'referral_id'    => $referralId,
             'invoice_amount' => $invoiceAmount,
             'created_reason' => $createdReason
         ]);
+
+        return $response->throw()->json();
+    }
+
+    /**
+     * @param string $commissionId
+     * @param array $attributes
+     * @return array|mixed
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    public function updateCommission(string $commissionId, array $attributes)
+    {
+        $response = $this->http->put($this->getApiUrl() . 'commissions/' . $commissionId, $attributes);
 
         return $response->throw()->json();
     }
@@ -103,5 +117,10 @@ class Affast
     private function affiliateCookieKey(): string
     {
         return 'affast_affiliate';
+    }
+
+    protected function getApiUrl(): string
+    {
+        return Str::finish($this->apiUrl, '/');
     }
 }
