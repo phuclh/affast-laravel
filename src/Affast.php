@@ -32,12 +32,12 @@ class Affast
     public function createReferral(string $affiliateTag, array $referee, bool $isRecurring = false)
     {
         $response = $this->http->post($this->getApiUrl() . 'referrals', [
-            'affiliate_tag' => $affiliateTag,
-            'referee_id' => $referee['id'],
-            'referee_name' => $referee['name'] ?? null,
-            'referee_email' => $referee['email'] ?? null,
+            'affiliate_tag'             => $affiliateTag,
+            'referee_id'                => $referee['id'],
+            'referee_name'              => $referee['name'] ?? null,
+            'referee_email'             => $referee['email'] ?? null,
             'referee_commission_amount' => $referee['commission_amount'] ?? null,
-            'is_recurring' => $isRecurring,
+            'is_recurring'              => $isRecurring,
         ]);
 
         return $response->throw()->json();
@@ -57,17 +57,17 @@ class Affast
 
     /**
      * @param string $referralId
-     * @param float $amount
-     * @param string|null $createdReason
+     * @param float $invoiceAmount
+     * @param array $attributes
      * @return array|mixed
      * @throws \Illuminate\Http\Client\RequestException
      */
-    public function createCommission(string $referralId, float $invoiceAmount, ?string $createdReason = null)
+    public function createCommission(string $referralId, float $invoiceAmount, array $attributes = [])
     {
         $response = $this->http->post($this->getApiUrl() . 'commissions', [
-            'referral_id' => $referralId,
+            'referral_id'    => $referralId,
             'invoice_amount' => $invoiceAmount,
-            'created_reason' => $createdReason,
+            'attributes'     => $attributes,
         ]);
 
         return $response->throw()->json();
@@ -102,11 +102,22 @@ class Affast
     //}
 
     /**
+     * @param string $affiliateTag
+     * @return array|mixed
+     */
+    public function findMarketerByAffiliateTag(string $affiliateTag)
+    {
+        $response = $this->http->get($this->getApiUrl() . 'affiliate-tags/' . $affiliateTag);
+
+        return $response->json();
+    }
+
+    /**
      * @return bool
      */
     public function hasAffiliateTag(): bool
     {
-        return isset($_COOKIE[$this->affiliateCookieKey()]) && ! empty($_COOKIE[$this->affiliateCookieKey()]);
+        return isset($_COOKIE[$this->affiliateCookieKey()]) && !empty($_COOKIE[$this->affiliateCookieKey()]);
     }
 
     /**
