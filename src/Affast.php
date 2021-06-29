@@ -32,12 +32,12 @@ class Affast
     public function createReferral(string $affiliateTag, array $referee, bool $isRecurring = false)
     {
         $response = $this->http->post($this->getApiUrl() . 'referrals', [
-            'affiliate_tag'             => $affiliateTag,
-            'referee_id'                => $referee['id'],
-            'referee_name'              => $referee['name'] ?? null,
-            'referee_email'             => $referee['email'] ?? null,
+            'affiliate_tag' => $affiliateTag,
+            'referee_id' => $referee['id'],
+            'referee_name' => $referee['name'] ?? null,
+            'referee_email' => $referee['email'] ?? null,
             'referee_commission_amount' => $referee['commission_amount'] ?? null,
-            'is_recurring'              => $isRecurring,
+            'is_recurring' => $isRecurring,
         ]);
 
         return $response->throw()->json();
@@ -65,9 +65,9 @@ class Affast
     public function createCommission(string $referralId, float $invoiceAmount, array $attributes = [])
     {
         $response = $this->http->post($this->getApiUrl() . 'commissions', [
-            'referral_id'    => $referralId,
+            'referral_id' => $referralId,
             'invoice_amount' => $invoiceAmount,
-            'attributes'     => $attributes,
+            'attributes' => $attributes,
         ]);
 
         return $response->throw()->json();
@@ -117,7 +117,7 @@ class Affast
      */
     public function hasAffiliateTag(): bool
     {
-        return isset($_COOKIE[$this->affiliateCookieKey()]) && !empty($_COOKIE[$this->affiliateCookieKey()]);
+        return isset($_COOKIE[$this->affiliateCookieKey()]) && ! empty($_COOKIE[$this->affiliateCookieKey()]);
     }
 
     /**
