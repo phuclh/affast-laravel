@@ -82,7 +82,7 @@ class Affast
     public function cancelCommission(string $commissionId, string $reason)
     {
         $response = $this->http->post($this->getApiUrl() . 'commissions/' . $commissionId . '/cancel', [
-            'reason' => $reason
+            'reason' => $reason,
         ]);
 
         return $response->throw()->json();
